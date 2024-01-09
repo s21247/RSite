@@ -13,9 +13,9 @@ const LessonForm = () => {
             email: "",
             fullNameParent: "",
             phoneNumber: "",
-            languageType: null,
-            lessonType: null,
-            classType: null
+            languageType: LanguageType.ENGLISH,
+            lessonType: LessonType.TRIAL,
+            classType: ClassType.MEDIUM
         }
     });
     const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
@@ -144,7 +144,7 @@ const LessonForm = () => {
                 {lessonType === LessonType.TRIAL && languageType === LanguageType.ENGLISH ? (
                     <S.StyledRow>
                         <label>Do której klasy chodzi twoje dziecko ?</label>
-                        <S.StyledSelect {...register("classType")}>
+                        <S.StyledSelect {...register("classType")} defaultValue={ClassType.MEDIUM}>
                             <S.StyledOption value={ClassType.MEDIUM}>{ClassType.MEDIUM}</S.StyledOption>
                             <S.StyledOption value={ClassType.HIGH}>{ClassType.HIGH}</S.StyledOption>
                             <S.StyledOption value={ClassType.VERY_HIGH}>{ClassType.VERY_HIGH}</S.StyledOption>
