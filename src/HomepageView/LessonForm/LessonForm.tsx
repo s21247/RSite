@@ -43,9 +43,6 @@ const LessonForm = () => {
                 classType: data.classType
             }
 
-            console.log(emailData)
-            const serviceId = process.env.REACT_APP_SERVICE_ID;
-
             emailjs.send(
                 process.env.REACT_APP_SERVICE_ID as string,
                 process.env.REACT_APP_TEMPLATE_ID as string,
