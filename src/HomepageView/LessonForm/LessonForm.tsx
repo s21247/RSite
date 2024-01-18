@@ -177,7 +177,7 @@ const LessonForm = () => {
                     </S.StyledRow>
                 )}
                 <S.StyledRow>
-                    <S.Label>Ankieta- preferencje dotyczące zajęć</S.Label>
+                    <S.Label>Ankieta - preferencje dotyczące zajęć</S.Label>
                     <S.StyledDays
                     defaultValue={selectedDays}
                     isMulti

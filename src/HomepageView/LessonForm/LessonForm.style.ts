@@ -174,7 +174,7 @@ export const StyledSelect = styled.select`
 `;
 
 export const StyledOption = styled.option`
-  font-size: 16px;
+  font-size: 12px;
 `;
 
 interface StyledOptionProps {

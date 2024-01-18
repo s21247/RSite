@@ -8,8 +8,6 @@ export default interface IForm {
     lessonType: LessonType | null,
     classType: ClassType | null,
     checkbox: boolean
-    selectedClasses: DayType[]
-
 }
 
 export enum LessonType {
@@ -30,15 +28,9 @@ export enum ClassType {
     VERY_HIGH = "klasa 6-7"
 }
 
-export enum DayType{
-    FIRST= "poniedziałek / sroda",
-    SECOND = "wtorek / czwartek",
-    DEFAULT = "dowolne dni tygodnia"
-
-}
 
 export const dayOptions = [
-    { value: 'poniedziałek / sroda', label: 'poniedziałek / sroda' },
+    { value: 'poniedziałek / środa', label: 'poniedziałek / środa' },
     { value: 'wtorek / czwartek', label: 'wtorek / czwartek' },
     { value: 'dowolne dni tygodnia', label: 'dowolne dni tygodnia' }
 ]
