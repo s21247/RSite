@@ -91,21 +91,27 @@ export const PricingContent = styled.div`
 `;
 
 export const PricingList = styled.ul`
+  position: relative;
   margin-top: 20px;
+  z-index: 1;
 `;
 
 export const PricingItem = styled.li`
+  z-index: 1;
   position: relative;
   padding-left: 20px;
   margin-bottom: 10px;
 `;
 
 export const PricingItemRow = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
 `;
 
 export const Line = styled.div`
+  z-index: 1;
   position: absolute;
   border-bottom: solid silver;
   border-bottom-width: 1px;
@@ -115,4 +121,7 @@ export const Line = styled.div`
 
 export const styledH3 = styled.h2``;
 
-export const Text = styled.p``;
+export const Text = styled.p`
+  z-index: 1;
+  position: relative;
+`;

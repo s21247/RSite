@@ -1,28 +1,28 @@
 
 export type NavItem = {
     label: string;
-    routing?: string;
+    routing: string;
 }
 
 export const NAV_ITEMS: NavItem[] = [
     {
         label: "Home",
-        routing: "/",
+        routing: "Home",
     },
     {
         label: "O nas",
-        routing: "/",
+        routing: "O nas",
     },
     {
         label: "Cennik",
-        routing: "#pricing",
+        routing: "Cennik",
     },
     {
         label: "Zapisy",
-        routing: "/",
+        routing: "Zapisy",
     },
     {
         label: "Kontakt",
-        routing: "/",
+        routing: "Kontakt",
     },
 ]

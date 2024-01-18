@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
-import { useForm } from 'react-hook-form';
-import IForm, {ClassType, LanguageType, LessonType} from "./const/Lesson";
+import React, {useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import IForm, {ClassType, dayOptions, hourOptions, LanguageType, LessonType} from "./const/Lesson";
 import emailjs from 'emailjs-com';
 import * as S from './LessonForm.style'
-
 
 
 const LessonForm = () => {
@@ -15,13 +14,25 @@ const LessonForm = () => {
             phoneNumber: "",
             languageType: LanguageType.ENGLISH,
             lessonType: LessonType.TRIAL,
-            classType: ClassType.MEDIUM
+            classType: ClassType.MEDIUM,
+            checkbox: false,
         }
     });
     const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
     const [isEmailError, setIsEmailError] = useState<boolean>(false);
     const lessonType = watch('lessonType');
     const languageType = watch('languageType');
+
+    const [selectedDays, setSelectedDays] = useState([dayOptions[1]]);
+    const [selectedHours, setSelectedHours] = useState([hourOptions[0], hourOptions[1]]);
+
+    const handleDayChange = (selectedOptions: any) => {
+        setSelectedDays(selectedOptions);
+    };
+
+    const handleHourChange = (selectedOptions: any) => {
+        setSelectedHours(selectedOptions)
+    }
 
     const onSubmit = async (data: IForm) => {
         if (
@@ -31,7 +42,9 @@ const LessonForm = () => {
             data.phoneNumber &&
             data.languageType &&
             data.lessonType &&
-            data.classType
+            data.classType &&
+            data.checkbox &&
+            selectedDays.length > 0
         ) {
             const emailData = {
                 fullName: data.fullName,
@@ -40,9 +53,11 @@ const LessonForm = () => {
                 phoneNumber: data.phoneNumber,
                 languageType: data.languageType,
                 lessonType: data.lessonType,
-                classType: data.classType
+                classType: data.classType,
+                checkbox: data.checkbox,
+                days: selectedDays.map(item => item.label).join(' , '),
+                hours: selectedHours.map(item => item.label).join(' , ')
             }
-
             emailjs.send(
                 process.env.REACT_APP_SERVICE_ID as string,
                 process.env.REACT_APP_TEMPLATE_ID as string,
@@ -58,15 +73,14 @@ const LessonForm = () => {
             setIsEmailError(prevState => !prevState)
         }
         }
-
     return (
-        <S.StyledForm id="pricing" onSubmit={handleSubmit(onSubmit)}>
+        <S.StyledForm id="Zapisy" onSubmit={handleSubmit(onSubmit)}>
             <S.Container>
                 <S.Title>Zapisy</S.Title>
                 <S.HeaderForm>
-                    <S.StyledRow>
+                    <S.StyledRowInput>
                         <S.Label htmlFor="fullName">Imię dziecka</S.Label>
-                        <input
+                        <S.StyledInput
                             {...register('fullName', {
                                 required: 'Imię jest wymagane',
                                 pattern: {
@@ -76,12 +90,12 @@ const LessonForm = () => {
                             })}
                         />
                         <S.StyledSpan>{errors.fullName && errors.fullName.message}</S.StyledSpan>
-                    </S.StyledRow>
-                    <S.StyledRow>
-                        <S.Label htmlFor="fullNameParent">Imię rodzica</S.Label>
-                        <input
+                    </S.StyledRowInput>
+                    <S.StyledRowInput>
+                        <S.Label htmlFor="fullNameParent">Imię i nazwisko rodzica</S.Label>
+                        <S.StyledInput
                             {...register('fullNameParent', {
-                                required: 'Imię powinno zawierać litery',
+                                required: 'Imię i nazwisko powinno zawierać litery',
                                 pattern: {
                                     value: /^[A-Za-z]+ [A-Za-z]+$/,
                                     message: 'Imię powinno zawierać litery',
@@ -89,12 +103,12 @@ const LessonForm = () => {
                             })}
                         />
                         <S.StyledSpan>{errors.fullNameParent && errors.fullNameParent.message}</S.StyledSpan>
-                    </S.StyledRow>
+                    </S.StyledRowInput>
                 </S.HeaderForm>
                 <S.HeaderForm>
-                    <S.StyledRow>
+                    <S.StyledRowInput>
                         <S.Label htmlFor="phoneNumber">Telefon</S.Label>
-                        <input
+                        <S.StyledInput
                             {...register('phoneNumber', {
                                 required: 'Nr tel jest wymagany',
                                 pattern: {
@@ -104,10 +118,10 @@ const LessonForm = () => {
                             })}
                         />
                         <S.StyledSpan>{errors.phoneNumber && errors.phoneNumber.message}</S.StyledSpan>
-                    </S.StyledRow>
-                    <S.StyledRow>
+                    </S.StyledRowInput>
+                    <S.StyledRowInput>
                         <S.Label htmlFor="email">Email</S.Label>
-                        <input
+                        <S.StyledInput
                             {...register('email', {
                                 required: 'Email jest wymagany',
                                 pattern: {
@@ -117,7 +131,7 @@ const LessonForm = () => {
                             })}
                         />
                         <S.StyledSpan>{errors.email && errors.email.message}</S.StyledSpan>
-                    </S.StyledRow>
+                    </S.StyledRowInput>
                 </S.HeaderForm>
                 <S.StyledRow>
                     <S.Label htmlFor="languageType">Na jakie zajęcia chciałbyś się zapisać ?</S.Label>
@@ -136,14 +150,14 @@ const LessonForm = () => {
                         <S.InputRadio type="radio" value={LessonType.TRIAL} {...register('lessonType')} defaultChecked={true} />
                         {LessonType.TRIAL}
                     </S.RadioLabel>
-                    <S.RadioLabel>
-                        <S.InputRadio type="radio" value={LessonType.NORMAL} {...register('lessonType')} />
+                    <S.RadioLabelDisabled>
+                        <S.InputRadioDisabled type="radio" value={LessonType.NORMAL} disabled={true} {...register('lessonType')}/>
                         {LessonType.NORMAL}
-                    </S.RadioLabel>
+                    </S.RadioLabelDisabled>
                 </S.StyledRow>
                 {lessonType === LessonType.TRIAL && languageType === LanguageType.ENGLISH ? (
                     <S.StyledRow>
-                        <label>Do której klasy chodzi twoje dziecko ?</label>
+                        <S.Label>Do której klasy chodzi twoje dziecko ?</S.Label>
                         <S.StyledSelect {...register("classType")} defaultValue={ClassType.MEDIUM}>
                             <S.StyledOption value={ClassType.MEDIUM}>{ClassType.MEDIUM}</S.StyledOption>
                             <S.StyledOption value={ClassType.HIGH}>{ClassType.HIGH}</S.StyledOption>
@@ -152,7 +166,7 @@ const LessonForm = () => {
                     </S.StyledRow>
                 ) : (
                     <S.StyledRow>
-                        <label>Do której klasy chodzi twoje dziecko ?</label>
+                        <S.Label>Do której klasy chodzi twoje dziecko ?</S.Label>
                         <S.StyledSelect {...register("classType")}>
                             <S.StyledOption value={ClassType.VERY_LOW}>{ClassType.VERY_LOW}</S.StyledOption>
                             <S.StyledOption value={ClassType.LOW}>{ClassType.LOW}</S.StyledOption>
@@ -162,6 +176,38 @@ const LessonForm = () => {
                         </S.StyledSelect>
                     </S.StyledRow>
                 )}
+                <S.StyledRow>
+                <S.StyledDays
+                    defaultValue={selectedDays}
+                    isMulti
+                    name="days"
+                    options={dayOptions}
+                    onChange={handleDayChange}
+                />
+            </S.StyledRow>
+                <S.StyledRow>
+                    <S.StyledDays
+                        defaultValue={selectedHours}
+                        isMulti
+                        name="hour"
+                        options={hourOptions}
+                        onChange={handleHourChange}
+                    />
+                </S.StyledRow>
+                <S.StyledRow>
+                    <S.Label htmlFor="checkbox">Zgoda na przetwarzanie danych osobowych</S.Label>
+                    <S.StyledRowCheckbox>
+                    <S.CheckboxInput
+                        type="checkbox"
+                        id="checkbox"
+                        {...register('checkbox', {
+                            required: 'Musisz wyrazić zgodę na przetwarzanie danych osobowych',
+                        })}
+                    />
+                        <S.StyledText>Wyrażam zgodę na przetwarzanie moich danych osobowych podanych w powyższym formularzu w celu zapisu na lekcję próbną z języka angielskiego i/lub hiszpańskiego</S.StyledText>
+                    </S.StyledRowCheckbox>
+                    <S.StyledSpan>{errors.checkbox && errors.checkbox.message}</S.StyledSpan>
+                </S.StyledRow>
                 <S.Button type="submit">Prześlij</S.Button>
                 {isEmailSent ? <S.StyledSuccess>Email wysłany poprawnie.</S.StyledSuccess> : null}
                 {isEmailError ? <S.StyledError>Nie udało się wysłać maila. Spróbuj ponownie później.</S.StyledError> : null}

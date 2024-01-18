@@ -6,13 +6,15 @@ export default interface IForm {
     phoneNumber: string;
     languageType: LanguageType | null
     lessonType: LessonType | null,
-    classType: ClassType | null
+    classType: ClassType | null,
+    checkbox: boolean
+    selectedClasses: DayType[]
 
 }
 
 export enum LessonType {
     TRIAL = "Zajęcia próbne",
-    NORMAL = "zajęcia normalne"
+    NORMAL = "Kursy językowe"
 }
 
 export enum LanguageType {
@@ -27,3 +29,23 @@ export enum ClassType {
     HIGH = "klasa 4-5",
     VERY_HIGH = "klasa 6-7"
 }
+
+export enum DayType{
+    FIRST= "poniedziałek / sroda",
+    SECOND = "wtorek / czwartek",
+    DEFAULT = "dowolne dni tygodnia"
+
+}
+
+export const dayOptions = [
+    { value: 'poniedziałek / sroda', label: 'poniedziałek / sroda' },
+    { value: 'wtorek / czwartek', label: 'wtorek / czwartek' },
+    { value: 'dowolne dni tygodnia', label: 'dowolne dni tygodnia' }
+]
+
+export const hourOptions = [
+    { value: '15:30-16:30', label: '15:30-16:30' },
+    { value: '16:00-17:00', label: '16:00-17:00' },
+    { value: '17:00-18:00', label: '17:00-18:00' },
+    { value: 'po 18:00', label: 'po 18:00' },
+]
