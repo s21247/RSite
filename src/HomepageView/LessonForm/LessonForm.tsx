@@ -24,7 +24,7 @@ const LessonForm = () => {
     const languageType = watch('languageType');
 
     const [selectedDays, setSelectedDays] = useState([dayOptions[0]]);
-    const [selectedHours, setSelectedHours] = useState([hourOptions[0], hourOptions[1]]);
+    const [selectedHours, setSelectedHours] = useState([hourOptions[0]]);
 
     const handleDayChange = (selectedOptions: any) => {
         setSelectedDays(selectedOptions);
