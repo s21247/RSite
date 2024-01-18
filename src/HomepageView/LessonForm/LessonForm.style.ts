@@ -3,7 +3,6 @@ import Select from "react-select";
 
 const $primary = "#11998e";
 const $secondary = "#38ef7d";
-const $gray = "#9b9b9b";
 
 export const StyledRow = styled.div`
   position: relative;

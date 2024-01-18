@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import IForm, {ClassType, dayOptions, hourOptions, LanguageType, LessonType} from "./const/Lesson";
 import emailjs from 'emailjs-com';
