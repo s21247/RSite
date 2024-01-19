@@ -6,7 +6,6 @@ export default interface IForm {
     phoneNumber: string;
     languageType: LanguageType | null
     lessonType: LessonType | null,
-    classType: ClassType | null,
     checkbox: boolean
 }
 
@@ -40,4 +39,18 @@ export const hourOptions = [
     { value: '16:00-17:00', label: '16:00-17:00' },
     { value: '17:00-18:00', label: '17:00-18:00' },
     { value: 'po 18:00', label: 'po 18:00' },
+]
+
+export const classOptionsENG = [
+    { value: ClassType.MEDIUM, label: ClassType.MEDIUM },
+    { value: ClassType.HIGH, label: ClassType.HIGH },
+    { value: ClassType.VERY_HIGH, label: ClassType.VERY_HIGH }
+]
+
+export const classOptionSPAIN = [
+    { value: ClassType.VERY_LOW, label: ClassType.VERY_LOW },
+    { value: ClassType.LOW, label: ClassType.LOW },
+    { value: ClassType.MEDIUM, label: ClassType.MEDIUM },
+    { value: ClassType.HIGH, label: ClassType.HIGH },
+    { value: ClassType.VERY_HIGH, label: ClassType.VERY_HIGH }
 ]

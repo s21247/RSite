@@ -2,7 +2,7 @@ import styled, {keyframes} from "styled-components";
 import Select from "react-select";
 
 const $primary = "#11998e";
-const $secondary = "#38ef7d";
+const $gradient = "#2684ff";
 
 export const StyledRow = styled.div`
   position: relative;
@@ -18,6 +18,9 @@ export const StyledDays = styled(Select)`
     /* Stylizacja dla opcji w rozwijanym menu */
    font-size: 12px; /* Przykładowy rozmiar czcionki */
    padding: 2px;
+   div > div > div{
+
+   }
   }
 `
 export const StyledRowCheckbox = styled.div`
@@ -55,7 +58,7 @@ export const StyledInput = styled.input`
   &:focus {
     font-weight: 500;
     border-width: 3px;
-    border-image: linear-gradient(to right, ${$primary}, ${$secondary});
+    border-image: linear-gradient(to right, ${$gradient}, ${$primary});
     border-image-slice: 1;
   }
 `;
@@ -116,7 +119,7 @@ const appearAnimation = keyframes`
   }
   45% {
     transform: translate(-50%, -50%) scale(1.6);
-    background-color: #64aedf;
+    background-color: #2ea44f;
   }
   50% {
     transform: translate(-50%, -50%) scale(1.7);
@@ -153,7 +156,7 @@ export const RadioLabel = styled.label`
     display: block;
     width: 12px;
     height: 12px;
-    background-color: #2ea44f;
+    background-color: #2684ff;
     border-radius: 50%;
     position: absolute;
     top: 50%;
@@ -194,7 +197,7 @@ export const StyledOptionMultiple = styled.option<StyledOptionProps>`
 
 export const Button = styled.button`
   appearance: none;
-  background-color: #2ea44f;
+  background-color: #2684ff;
   border: 1px solid rgba(27, 31, 35, .15);
   border-radius: 6px;
   box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
@@ -215,6 +218,7 @@ export const Button = styled.button`
   touch-action: manipulation;
   vertical-align: middle;
   white-space: nowrap;
+  transition: 0.5s ease-out;
   
   &:hover {
     background-color: black;
@@ -279,10 +283,10 @@ export const CheckboxInput = styled.input `
   height: 10px;
   padding: 5px;
   border: 1px solid black;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease-out;
 
   &:hover {
-    border: 1px solid #2ea44f;
+    border: 1px solid #2684ff;
   }
 
   &:checked {

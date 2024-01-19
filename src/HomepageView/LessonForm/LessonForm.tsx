@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import IForm, {ClassType, dayOptions, hourOptions, LanguageType, LessonType} from "./const/Lesson";
+import IForm, {
+    classOptionsENG,
+    classOptionSPAIN,
+    dayOptions,
+    hourOptions,
+    LanguageType,
+    LessonType
+} from "./const/Lesson";
 import emailjs from 'emailjs-com';
 import * as S from './LessonForm.style'
 
@@ -14,7 +21,6 @@ const LessonForm = () => {
             phoneNumber: "",
             languageType: LanguageType.ENGLISH,
             lessonType: LessonType.TRIAL,
-            classType: ClassType.MEDIUM,
             checkbox: false,
         }
     });
@@ -25,6 +31,8 @@ const LessonForm = () => {
 
     const [selectedDays, setSelectedDays] = useState([dayOptions[0]]);
     const [selectedHours, setSelectedHours] = useState([hourOptions[0]]);
+    const [selectedClassENG, setSelectedClassENG] = useState(classOptionsENG[0]);
+    const [selectedClassSPAIN, setSelectedClassSPAIN] = useState(classOptionSPAIN[0])
 
     const handleDayChange = (selectedOptions: any) => {
         setSelectedDays(selectedOptions);
@@ -32,6 +40,13 @@ const LessonForm = () => {
 
     const handleHourChange = (selectedOptions: any) => {
         setSelectedHours(selectedOptions)
+    }
+    const handleClassChangeENG = (selectedOption: any) => {
+        setSelectedClassENG(selectedOption);
+    }
+
+    const handleClassChangeSPAIN = (selectedOption: any) => {
+        setSelectedClassSPAIN(selectedOption)
     }
 
     const onSubmit = async (data: IForm) => {
@@ -42,21 +57,39 @@ const LessonForm = () => {
             data.phoneNumber &&
             data.languageType &&
             data.lessonType &&
-            data.classType &&
             data.checkbox &&
             selectedDays.length > 0
         ) {
-            const emailData = {
-                fullName: data.fullName,
-                email: data.email,
-                fullNameParent: data.fullNameParent,
-                phoneNumber: data.phoneNumber,
-                languageType: data.languageType,
-                lessonType: data.lessonType,
-                classType: data.classType,
-                checkbox: data.checkbox,
-                days: selectedDays.map(item => item.label).join(' , '),
-                hours: selectedHours.map(item => item.label).join(' , ')
+            let emailData;
+            if(data.languageType === LanguageType.ENGLISH){
+                emailData = {
+                    fullName: data.fullName,
+                    email: data.email,
+                    fullNameParent: data.fullNameParent,
+                    phoneNumber: data.phoneNumber,
+                    languageType: data.languageType,
+                    lessonType: data.lessonType,
+                    classType: selectedClassENG.value,
+                    checkbox: data.checkbox,
+                    days: selectedDays.map(item => item.label).join(' , '),
+                    hours: selectedHours.map(item => item.label).join(' , ')
+                }
+            } else {
+                emailData = {
+                    fullName: data.fullName,
+                    email: data.email,
+                    fullNameParent: data.fullNameParent,
+                    phoneNumber: data.phoneNumber,
+                    languageType: data.languageType,
+                    lessonType: data.lessonType,
+                    classType: selectedClassSPAIN.value,
+                    checkbox: data.checkbox,
+                    days: selectedDays.map(item => item.label).join(' , '),
+                    hours: selectedHours.map(item => item.label).join(' , ')
+                }
+            }
+            if(!emailData){
+                setIsEmailError(prevState => !prevState)
             }
             emailjs.send(
                 process.env.REACT_APP_SERVICE_ID as string,
@@ -68,7 +101,9 @@ const LessonForm = () => {
             }).catch(() => {
                 setIsEmailError(prevState => !prevState)
             })
-                .finally(() => reset())
+                .finally(() => {
+                    reset()
+                })
         }else {
             setIsEmailError(prevState => !prevState)
         }
@@ -84,7 +119,7 @@ const LessonForm = () => {
                             {...register('fullName', {
                                 required: 'Imię jest wymagane',
                                 pattern: {
-                                    value: /^[A-Za-z]+ [A-Za-z]+$/,
+                                    value: /^[A-Za-zęóąśłżźćńĘÓĄŚŁŻŹĆŃ]+$/,
                                     message: 'Imię powinno zawierać litery',
                                 },
                             })}
@@ -97,7 +132,7 @@ const LessonForm = () => {
                             {...register('fullNameParent', {
                                 required: 'Imię i nazwisko powinno zawierać litery',
                                 pattern: {
-                                    value: /^[A-Za-z]+ [A-Za-z]+$/,
+                                    value: /^[A-Za-zęóąśłżźćńĘÓĄŚŁŻŹĆŃ]+ [A-Za-zęóąśłżźćńĘÓĄŚŁŻŹĆŃ]+$/,
                                     message: 'Imię powinno zawierać litery',
                                 },
                             })}
@@ -158,27 +193,29 @@ const LessonForm = () => {
                 {lessonType === LessonType.TRIAL && languageType === LanguageType.ENGLISH ? (
                     <S.StyledRow>
                         <S.Label>Do której klasy chodzi twoje dziecko ?</S.Label>
-                        <S.StyledSelect {...register("classType")} defaultValue={ClassType.MEDIUM}>
-                            <S.StyledOption value={ClassType.MEDIUM}>{ClassType.MEDIUM}</S.StyledOption>
-                            <S.StyledOption value={ClassType.HIGH}>{ClassType.HIGH}</S.StyledOption>
-                            <S.StyledOption value={ClassType.VERY_HIGH}>{ClassType.VERY_HIGH}</S.StyledOption>
-                        </S.StyledSelect>
+                        <S.StyledDays
+                            key={"english"}
+                            defaultValue={selectedClassENG}
+                            name="class"
+                            options={classOptionsENG}
+                            onChange={(selectedOption) => handleClassChangeENG(selectedOption)}
+                        />
                     </S.StyledRow>
                 ) : (
                     <S.StyledRow>
                         <S.Label>Do której klasy chodzi twoje dziecko ?</S.Label>
-                        <S.StyledSelect {...register("classType")}>
-                            <S.StyledOption value={ClassType.VERY_LOW}>{ClassType.VERY_LOW}</S.StyledOption>
-                            <S.StyledOption value={ClassType.LOW}>{ClassType.LOW}</S.StyledOption>
-                            <S.StyledOption value={ClassType.MEDIUM}>{ClassType.MEDIUM}</S.StyledOption>
-                            <S.StyledOption value={ClassType.HIGH}>{ClassType.HIGH}</S.StyledOption>
-                            <S.StyledOption value={ClassType.VERY_HIGH}>{ClassType.VERY_HIGH}</S.StyledOption>
-                        </S.StyledSelect>
+                        <S.StyledDays
+                            key={"spanish"}
+                            defaultValue={selectedClassSPAIN}
+                            name="class"
+                            options={classOptionSPAIN}
+                            onChange={(selectedOption) => handleClassChangeSPAIN(selectedOption)}
+                        />
                     </S.StyledRow>
                 )}
                 <S.StyledRow>
                     <S.Label>Ankieta - preferencje dotyczące zajęć</S.Label>
-                    <S.StyledDays
+                    <S.StyledDays key={"days"}
                     defaultValue={selectedDays}
                     isMulti
                     name="days"
@@ -187,7 +224,7 @@ const LessonForm = () => {
                 />
             </S.StyledRow>
                 <S.StyledRow>
-                    <S.StyledDays
+                    <S.StyledDays key={"hours"}
                         defaultValue={selectedHours}
                         isMulti
                         name="hour"
@@ -199,6 +236,7 @@ const LessonForm = () => {
                     <S.Label htmlFor="checkbox">Zgoda na przetwarzanie danych osobowych</S.Label>
                     <S.StyledRowCheckbox>
                     <S.CheckboxInput
+                        key={"rodo"}
                         type="checkbox"
                         id="checkbox"
                         {...register('checkbox', {
