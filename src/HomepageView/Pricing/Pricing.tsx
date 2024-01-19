@@ -59,7 +59,7 @@ const Pricing = () => {
                                     </S.PricingItem>
                                 })
                             }
-                        <S.Text>Zajęcia próbne są dostępne dla dzieci od lat 5 do klasy 6-7</S.Text>
+                        <S.Text>Zajęcia próbne są dostępne dla dzieci z klas od 1-3 do 6-7</S.Text>
                         </S.PricingList>
                     </S.PricingContent>
                 </S.PricingElement>

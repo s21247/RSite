@@ -48,8 +48,6 @@ export const classOptionsENG = [
 ]
 
 export const classOptionSPAIN = [
-    { value: ClassType.VERY_LOW, label: ClassType.VERY_LOW },
-    { value: ClassType.LOW, label: ClassType.LOW },
     { value: ClassType.MEDIUM, label: ClassType.MEDIUM },
     { value: ClassType.HIGH, label: ClassType.HIGH },
     { value: ClassType.VERY_HIGH, label: ClassType.VERY_HIGH }
